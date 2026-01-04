@@ -7,7 +7,6 @@ import yfinance as yf
 import plotly.graph_objects as go
 import ta
 from pages.utils.plotly_figure import plotly_table, candlestick, RSI, MACD, Moving_average, close_chart
-import pandas_datareader.data as web
 import datetime
 
 
