@@ -4,11 +4,8 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 import yfinance as yf
-# import pandas_datareader.data as web
 import datetime
 import capm_functions
-# import pages.capm_functions as capm_functions
-
 import streamlit as st
 
 st.set_page_config(
@@ -59,8 +56,8 @@ try:
     SP500 = SP500[['Close']].reset_index()
     SP500.columns = ['Date', 'sp500']
 
-    # SP500 = web.DataReader(['sp500'], 'fred', start, end)
-    # print(SP500.head())
+    
+   
 
     stocks_df = pd.DataFrame()
 
