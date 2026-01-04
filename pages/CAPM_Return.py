@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 import yfinance as yf
-import pandas_datareader.data as web
+# import pandas_datareader.data as web
 import datetime
 import capm_functions
 # import pages.capm_functions as capm_functions
@@ -55,7 +55,11 @@ with col2:
 try:
     end = datetime.date.today()
     start = datetime.date(datetime.date.today().year-year, datetime.date.today().month, datetime.date.today().day)
-    SP500 = web.DataReader(['sp500'], 'fred', start, end)
+    SP500 = yf.download("^GSPC", start=start, end=end)
+    SP500 = SP500[['Close']].reset_index()
+    SP500.columns = ['Date', 'sp500']
+
+    # SP500 = web.DataReader(['sp500'], 'fred', start, end)
     # print(SP500.head())
 
     stocks_df = pd.DataFrame()
@@ -141,5 +145,3 @@ try:
 except Exception as e:
     st.error("Something went wrong")
     st.exception(e)
-# except:
-#     st.write('Please select valid input')

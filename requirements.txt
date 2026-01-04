@@ -4,6 +4,5 @@ pandas
 numpy
 plotly
 ta
-pandas_datareader
 statsmodels
 scikit-learn
