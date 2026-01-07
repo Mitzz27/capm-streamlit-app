@@ -1,8 +1,23 @@
 import plotly.graph_objects as go
 import pandas as pd
-import pandas_ta as pta
 import datetime
 import dateutil
+import numpy as np
+
+def compute_rsi(series, period=14):
+    delta = series.diff()
+    gain = (delta.where(delta > 0, 0)).rolling(period).mean()
+    loss = (-delta.where(delta < 0, 0)).rolling(period).mean()
+    rs = gain / loss
+    return 100 - (100 / (1 + rs))
+
+def compute_macd(series, fast=12, slow=26, signal=9):
+    exp1 = series.ewm(span=fast, adjust=False).mean()
+    exp2 = series.ewm(span=slow, adjust=False).mean()
+    macd = exp1 - exp2
+    signal_line = macd.ewm(span=signal, adjust=False).mean()
+    hist = macd - signal_line
+    return macd, signal_line, hist
 
 # -------------------------------
 # Plotly Table Function
@@ -75,7 +90,7 @@ def candlestick(dataframe, num_period):
 # RSI Chart
 # -------------------------------
 def RSI(dataframe, num_period):
-    dataframe['RSI'] = pta.rsi(dataframe['Close'])
+    dataframe['RSI'] = compute_rsi(dataframe['Close'])
     dataframe = filter_data(dataframe, num_period)
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=dataframe['Date'], y=dataframe['RSI'], name='RSI', line=dict(width=2, color='orange')))
@@ -88,7 +103,7 @@ def RSI(dataframe, num_period):
 # Moving Average Chart
 # -------------------------------
 def Moving_average(dataframe, num_period):
-    dataframe['SMA_50'] = pta.sma(dataframe['Close'], 50)
+    dataframe['SMA_50'] = dataframe['Close'].rolling(50).mean()
     dataframe = filter_data(dataframe, num_period)
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=dataframe['Date'], y=dataframe['Open'], mode='lines', name='Open', line=dict(width=2, color='#5ab7ff')))
@@ -104,10 +119,10 @@ def Moving_average(dataframe, num_period):
 # MACD Chart
 # -------------------------------
 def MACD(dataframe, num_period):
-    macd_df = pta.macd(dataframe['Close'])
-    dataframe['MACD'] = macd_df.iloc[:,0]
-    dataframe['MACD Signal'] = macd_df.iloc[:,1]
-    dataframe['MACD Hist'] = macd_df.iloc[:,2]
+    macd, signal, hist = compute_macd(dataframe['Close'])
+    dataframe['MACD'] = macd
+    dataframe['MACD Signal'] = signal
+    dataframe['MACD Hist'] = hist
 
     dataframe = filter_data(dataframe, num_period)
     fig = go.Figure()

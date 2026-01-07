@@ -3,7 +3,6 @@ yfinance
 pandas
 numpy
 plotly
-ta
 statsmodels
 scikit-learn
-pandas-ta
+python-dateutil

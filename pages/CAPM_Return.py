@@ -8,11 +8,13 @@ import datetime
 import capm_functions
 import streamlit as st
 
+
+# Setting Page Config
 st.set_page_config(
     page_title="CAPM",
     page_icon="chart_with_upwards_trend",
-    layout="wide"
-)
+    layout="wide" )
+st.title("Capital Asset  Pricing Model 📊")
 
 
 # --------------------------------------------------
@@ -35,11 +37,6 @@ st.markdown("""
 
 # -------------------------------------------------
 
-# Setting Page Config
-st.set_page_config(page_title="CAPM",
-                   page_icon="chart_with_upwards_trend",
-                   layout='wide')
-st.title("Capital Asset  Pricing Model 📊")
 
 # Getting input from user
 col1, col2 =st.columns([1,1])
